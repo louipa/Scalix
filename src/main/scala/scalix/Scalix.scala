@@ -4,6 +4,7 @@ import java.io.PrintWriter
 import scala.util.{Try, Using}
 import org.json4s._
 import org.json4s.native.JsonMethods._
+import scala.math.Ordering.Implicits.infixOrderingOps
 
 case class Movie(id: Int, title: String)
 
@@ -83,6 +84,7 @@ object Scalix extends App {
   }
 
   def collaboration(actor1: (String, String), actor2: (String, String)): Set[(String, String)] = {
+
     val movies1 = findActorId(actor1._1, actor1._2).map(findActorMovies).getOrElse(Set.empty)
     val movies2 = findActorId(actor2._1, actor2._2).map(findActorMovies).getOrElse(Set.empty)
 
@@ -92,5 +94,22 @@ object Scalix extends App {
         (directorName, movieTitle)
       }
     }
+  }
+
+  def mostFrequentActorPairs(actors: Seq[(String, String)]): Seq[((String, String), (String, String), Int)] = {
+    val actorPairsWithMovies = for {
+      actor1 <- actors
+      actor2 <- actors
+      if actor1 < actor2
+      commonMovies = collaboration(actor1, actor2)
+      if commonMovies.nonEmpty
+    } yield (actor1, actor2, commonMovies.size)
+
+    actorPairsWithMovies
+      .groupBy { case (actor1, actor2, _) => (actor1, actor2) }
+      .view.mapValues(_.map(_._3).sum)
+      .toSeq
+      .sortBy(-_._2)
+      .map { case ((actor1, actor2), count) => (actor1, actor2, count) }
   }
 }

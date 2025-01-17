@@ -51,4 +51,12 @@ val res2: Option[(Int, String)] = Some((81199,Sean McGinly))
 
 scala> Scalix.findCollaborations(("Tom", "Hanks"), ("Rita", "Wilson"))
 val res3: Set[(String, String)] = ...
+
+scala> Scalix.mostFrequentActorPairs(Seq(("Tom", "Hanks"), ("Rita", "Wilson"), ("Robin", "Williams")))
+val res4: Seq[((String, String), (String, String), Int)] = ...
 ```
+
+## Quiz 4.1
+
+Par manque de temps, il était plus simple de faire une fonction qui prend une séquence d'acteur.ices plutôt que de les chercher dans le cache primaire.
+
