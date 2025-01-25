@@ -10,7 +10,8 @@ case class Movie(id: Int, title: String)
 
 object Scalix extends App {
   implicit val formats: DefaultFormats.type = DefaultFormats
-  private val apiKey = "bc82d9956e20f6a72709348fb8779c5d"
+  // insert your TMDB api key here
+  private val apiKey = ""
   private val baseUrl = "https://api.themoviedb.org/3"
   private val cacheDir = new java.io.File("data")
   private val primaryCache = scala.collection.mutable.Map[String, String]()
